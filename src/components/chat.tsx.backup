@@ -1,0 +1,369 @@
+'use client';
+
+import { useChat } from '@ai-sdk/react';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Send } from 'lucide-react';
+import { useScrollToBottom } from './use-scroll-to-bottom';
+
+export default function Chat() {
+  const { messages, input, handleInputChange, handleSubmit, status } =
+    useChat();
+  const [messagesContainerRef, messagesEndRef] =
+    useScrollToBottom<HTMLDivElement>();
+
+  return (
+    // <Fragment>
+    //   <div className="flex min-h-0 flex-1 flex-col">
+    //     <ScrollArea className="flex-1 px-6">
+    //       <div
+    //         ref={scrollAreaRef}
+    //         className="h-full min-h-0 flex-1 overflow-y-auto"
+    //       >
+    //         <div className="space-y-4 py-4">
+    //           {messages.length === 0 ? (
+    //             <div className="text-muted-foreground flex h-full items-center justify-center">
+    //               <p>Start a conversation...</p>
+    //             </div>
+    //           ) : (
+    //             messages.map((message) => (
+    //               <div
+    //                 key={message.id}
+    //                 className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+    //               >
+    //                 <div
+    //                   className={`max-w-[80%] rounded-lg px-4 py-2 ${
+    //                     message.role === 'user'
+    //                       ? 'bg-primary text-primary-foreground'
+    //                       : 'bg-muted'
+    //                   }`}
+    //                 >
+    //                   {message.parts.map((part, index) => {
+    //                     switch (part.type) {
+    //                       // render text parts as simple text:
+    //                       case 'text':
+    //                         console.log('message part:', part);
+
+    //                         return (
+    //                           <p
+    //                             key={index}
+    //                             className="break-words whitespace-pre-wrap"
+    //                           >
+    //                             {part.text}
+    //                           </p>
+    //                         );
+
+    //                       // for tool invocations, distinguish between the tools and the state:
+    //                       case 'tool-invocation': {
+    //                         const callId = part.toolInvocation.toolCallId;
+
+    //                         switch (part.toolInvocation.toolName) {
+    //                           case 'generate-color-palette': {
+    //                             switch (part.toolInvocation.state) {
+    //                               // case 'call':
+    //                               //   return (
+    //                               //     <div key={callId}>
+    //                               //       Generating color palette
+    //                               //       {part.toolInvocation.args.count} colors
+    //                               //       {part.toolInvocation.args.minDistance && (
+    //                               //         <span>
+    //                               //           {' '}
+    //                               //           and a minimum distance of{' '}
+    //                               //           {part.toolInvocation.args.minDistance}
+    //                               //         </span>
+    //                               //       )}
+    //                               //     </div>
+    //                               //   );
+    //                               case 'result':
+    //                                 // Example of structured content for a color palette:
+    //                                 // {
+    //                                 //     "content": [
+    //                                 //         {
+    //                                 //             "type": "text",
+    //                                 //             "text": "Colors: #eb36e1, #2a67be, #edb892"
+    //                                 //         }
+    //                                 //     ],
+    //                                 //     "structuredContent": {
+    //                                 //         "type": "color-palette",
+    //                                 //         "colors": [
+    //                                 //             "#eb36e1",
+    //                                 //             "#2a67be",
+    //                                 //             "#edb892"
+    //                                 //         ]
+    //                                 //     }
+    //                                 // }
+
+    //                                 return (
+    //                                   <div key={callId}>
+    //                                     <div className="bg-muted-foreground flex space-x-2 rounded-lg px-4 py-2">
+    //                                       {(
+    //                                         (
+    //                                           part.toolInvocation.result as {
+    //                                             structuredContent?: {
+    //                                               colors?: string[];
+    //                                             };
+    //                                           }
+    //                                         ).structuredContent?.colors ?? []
+    //                                       ).map((color, index) => (
+    //                                         <div
+    //                                           key={index}
+    //                                           className="h-8 w-8 rounded-full"
+    //                                           style={{ backgroundColor: color }}
+    //                                         ></div>
+    //                                       ))}
+    //                                     </div>
+    //                                   </div>
+    //                                 );
+    //                             }
+    //                             break;
+    //                           }
+    //                           //     case 'askForConfirmation': {
+    //                           //       switch (part.toolInvocation.state) {
+    //                           //         case 'call':
+    //                           //           return (
+    //                           //             <div key={callId}>
+    //                           //               {part.toolInvocation.args.message}
+    //                           //               <div>
+    //                           //                 <button
+    //                           //                   onClick={() =>
+    //                           //                     addToolResult({
+    //                           //                       toolCallId: callId,
+    //                           //                       result: 'Yes, confirmed.',
+    //                           //                     })
+    //                           //                   }
+    //                           //                 >
+    //                           //                   Yes
+    //                           //                 </button>
+    //                           //                 <button
+    //                           //                   onClick={() =>
+    //                           //                     addToolResult({
+    //                           //                       toolCallId: callId,
+    //                           //                       result: 'No, denied',
+    //                           //                     })
+    //                           //                   }
+    //                           //                 >
+    //                           //                   No
+    //                           //                 </button>
+    //                           //               </div>
+    //                           //             </div>
+    //                           //           );
+    //                           //         case 'result':
+    //                           //           return (
+    //                           //             <div key={callId}>
+    //                           //               Location access allowed:{' '}
+    //                           //               {part.toolInvocation.result}
+    //                           //             </div>
+    //                           //           );
+    //                           //       }
+    //                           //       break;
+    //                           //     }
+
+    //                           //     case 'getLocation': {
+    //                           //       switch (part.toolInvocation.state) {
+    //                           //         case 'call':
+    //                           //           return (
+    //                           //             <div key={callId}>Getting location...</div>
+    //                           //           );
+    //                           //         case 'result':
+    //                           //           return (
+    //                           //             <div key={callId}>
+    //                           //               Location: {part.toolInvocation.result}
+    //                           //             </div>
+    //                           //           );
+    //                           //       }
+    //                           //       break;
+    //                           //     }
+
+    //                           //     case 'getWeatherInformation': {
+    //                           //       switch (part.toolInvocation.state) {
+    //                           //         // example of pre-rendering streaming tool calls:
+    //                           //         case 'partial-call':
+    //                           //           return (
+    //                           //             <pre key={callId}>
+    //                           //               {JSON.stringify(
+    //                           //                 part.toolInvocation,
+    //                           //                 null,
+    //                           //                 2
+    //                           //               )}
+    //                           //             </pre>
+    //                           //           );
+    //                           //         case 'call':
+    //                           //           return (
+    //                           //             <div key={callId}>
+    //                           //               Getting weather information for{' '}
+    //                           //               {part.toolInvocation.args.city}...
+    //                           //             </div>
+    //                           //           );
+    //                           //         case 'result':
+    //                           //           return (
+    //                           //             <div key={callId}>
+    //                           //               Weather in {part.toolInvocation.args.city}:{' '}
+    //                           //               {part.toolInvocation.result}
+    //                           //             </div>
+    //                           //           );
+    //                           //       }
+    //                           //       break;
+    //                           //     }
+    //                         }
+    //                       }
+    //                     }
+
+    //                     return null;
+    //                   })}
+    //                 </div>
+    //               </div>
+    //             ))
+    //           )}
+    //           {(status === 'submitted' || status === 'streaming') && (
+    //             <div className="flex justify-start">
+    //               <div className="bg-muted flex items-center space-x-2 rounded-lg px-4 py-2">
+    //                 <div className="flex space-x-1">
+    //                   <div className="bg-muted-foreground h-2 w-2 animate-bounce rounded-full"></div>
+    //                   <div
+    //                     className="bg-muted-foreground h-2 w-2 animate-bounce rounded-full"
+    //                     style={{ animationDelay: '0.1s' }}
+    //                   ></div>
+    //                   <div
+    //                     className="bg-muted-foreground h-2 w-2 animate-bounce rounded-full"
+    //                     style={{ animationDelay: '0.2s' }}
+    //                   ></div>
+    //                 </div>
+    //                 <Button
+    //                   type="button"
+    //                   size="sm"
+    //                   variant="ghost"
+    //                   onClick={() => stop()}
+    //                   className="ml-2"
+    //                 >
+    //                   Stop
+    //                 </Button>
+    //               </div>
+    //             </div>
+    //           )}
+    //         </div>
+    //       </div>
+    //     </ScrollArea>
+
+    //     <div className="bg-background border-t px-6 py-4">
+    //       <form onSubmit={handleSubmit} className="flex space-x-2">
+    //         <Input
+    //           value={input}
+    //           onChange={handleInputChange}
+    //           placeholder="Type your message..."
+    //           className="flex-1"
+    //           disabled={status !== 'ready'}
+    //         />
+    //         <Button
+    //           type="submit"
+    //           size="icon"
+    //           disabled={status !== 'ready' || !input.trim()}
+    //         >
+    //           <Send className="h-4 w-4" />
+    //         </Button>
+    //       </form>
+    //     </div>
+    //   </div>
+    // </Fragment>
+
+    <div className="bg-background flex h-dvh flex-row justify-center pb-4 md:pb-8">
+      <div className="flex flex-col items-center justify-between gap-4">
+        <div
+          ref={messagesContainerRef}
+          className="flex h-full w-dvw flex-col items-center gap-4 overflow-y-scroll"
+        >
+          <div className="mt-20 max-w-[500px]">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                {message.content && typeof message.content === 'string' ? (
+                  <div className="flex flex-col gap-4 text-zinc-800 dark:text-zinc-300">
+                    <div>{message.content}</div>
+                  </div>
+                ) : null}
+
+                {/* Render tool invocations using parts for the newer version */}
+                {Array.isArray(message.parts) && (
+                  <div className="flex flex-col gap-4">
+                    {message.parts.map((part, index) => {
+                      console.log('message part:', part);
+                      if (part.type === 'tool-invocation') {
+                        console.log('Tool invocation part:', part);
+                        const { toolInvocation } = part;
+                        const { toolName, toolCallId, state, result } =
+                          toolInvocation;
+
+                        if (state === 'result') {
+                          console.log(
+                            `Tool result for ${toolName} (${toolCallId}):`,
+                            result
+                          );
+                          if (toolName === 'generateCoolPalette') {
+                            const colors =
+                              (result?.structuredContent?.colors as string[]) ??
+                              [];
+                            return (
+                              <div key={toolCallId}>
+                                <div className="bg-muted-foreground flex space-x-2 rounded-lg px-4 py-2">
+                                  {colors.map((color, idx) => (
+                                    <div
+                                      key={idx}
+                                      className="h-8 w-8 rounded-full"
+                                      style={{ backgroundColor: color }}
+                                    ></div>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          }
+                          // Add more toolName cases as needed
+                        }
+                      }
+                      // Optionally handle other part types (e.g., text)
+                      if (part.type === 'text') {
+                        return (
+                          <div
+                            key={index}
+                            className="break-words whitespace-pre-wrap"
+                          >
+                            {part.text}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div
+            ref={messagesEndRef}
+            className="min-h-[24px] min-w-[24px] shrink-0"
+          />
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-[calc(100dvw-32px) relative flex w-full flex-row items-end gap-2 px-4 md:max-w-[500px] md:px-0"
+        >
+          <Input
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Type your message..."
+            className="flex-1"
+            disabled={status !== 'ready'}
+          />
+          <Button
+            type="submit"
+            size="icon"
+            disabled={status !== 'ready' || !input.trim()}
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,184 @@
+'use client';
+
+import { Attachment, UIMessage } from 'ai';
+import { ReactNode } from 'react';
+import { Weather } from './weather';
+import { Bot, User } from 'lucide-react';
+import { Markdown } from './markdown';
+
+export default function PreviewMessage({
+  role,
+  parts,
+}: {
+  role: string;
+  content: string | ReactNode;
+  parts: UIMessage['parts'];
+  attachments?: Array<Attachment>;
+}) {
+  const hasToolInvocation = parts.some(
+    (part) => part.type === 'tool-invocation'
+  );
+
+  return (
+    <div
+      className={`animate-fade-in-up flex w-full flex-row gap-4 px-4 first-of-type:pt-20 md:w-[500px] md:px-0`}
+    >
+      <div className="flex size-[24px] shrink-0 flex-col items-center justify-center rounded-sm border p-1 text-zinc-500">
+        {role === 'assistant' ? <Bot /> : <User />}
+      </div>
+
+      <div className="flex w-full flex-col gap-2">
+        {parts.map((part, index) => {
+          /* {content && typeof content === 'string' && (
+            <div className="flex flex-col gap-4 text-zinc-800 dark:text-zinc-300">
+              <Markdown>{content}</Markdown>
+            </div>
+          )} */
+
+          if (part.type === 'text' && !hasToolInvocation) {
+            return (
+              <div
+                key={index}
+                className="flex flex-col gap-4 text-zinc-800 dark:text-zinc-300"
+              >
+                <Markdown>{part.text}</Markdown>
+              </div>
+            );
+          }
+
+          /* {toolInvocations && (
+            <div className="flex flex-col gap-4">
+              {toolInvocations.map((toolInvocation) => {
+                const { toolName, toolCallId, state } = toolInvocation;
+
+                if (state === 'result') {
+                  const { result } = toolInvocation;
+
+                  return (
+                    <div key={toolCallId}>
+                      {toolName === 'getWeather' ? (
+                        <Weather weatherAtLocation={result} />
+                      ) : toolName === 'displayFlightStatus' ? (
+                        <div>displayFlightStatus</div>
+                      ) : toolName === 'searchFlights' ? (
+                        <div>searchFlights</div>
+                      ) : toolName === 'selectSeats' ? (
+                        <div>selectSeats</div>
+                      ) : toolName === 'createReservation' ? (
+                        Object.keys(result).includes('error') ? null : (
+                          <div>createReservation</div>
+                        )
+                      ) : toolName === 'authorizePayment' ? (
+                        <div>authorizePayment</div>
+                      ) : toolName === 'displayBoardingPass' ? (
+                        <div>displayBoardingPass</div>
+                      ) : toolName === 'verifyPayment' ? (
+                        <div>verifyPayment</div>
+                      ) : (
+                        <div>{JSON.stringify(result, null, 2)}</div>
+                      )}
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={toolCallId} className="skeleton">
+                      {toolName === 'getWeather' ? (
+                        <Weather />
+                      ) : toolName === 'displayFlightStatus' ? (
+                        <div>Loading flight status...</div>
+                      ) : toolName === 'searchFlights' ? (
+                        <div>Searching for flights...</div>
+                      ) : toolName === 'selectSeats' ? (
+                        <div>Selecting seats...</div>
+                      ) : toolName === 'createReservation' ? (
+                        <div>Creating reservation...</div>
+                      ) : toolName === 'verifyPayment' ? (
+                        <div>Verifying payment...</div>
+                      ) : toolName === 'authorizePayment' ? (
+                        <div>Authorizing payment...</div>
+                      ) : toolName === 'displayColorPalette' ? (
+                        <div>Loading color palette...</div>
+                      ) : toolName === 'displayBoardingPass' ? (
+                        <div>Loading boarding pass...</div>
+                      ) : null}
+                    </div>
+                  );
+                }
+              })}
+            </div>
+          )} */
+
+          if (part.type === 'tool-invocation') {
+            const { toolInvocation } = part;
+            switch (toolInvocation.state) {
+              case 'call':
+                return (
+                  <div key={toolInvocation.toolCallId} className="skeleton">
+                    {toolInvocation.toolName === 'displayWeather' ? (
+                      <Weather />
+                    ) : toolInvocation.toolName === 'displayFlightStatus' ? (
+                      <div>Loading flight status...</div>
+                    ) : toolInvocation.toolName === 'searchFlights' ? (
+                      <div>Searching for flights...</div>
+                    ) : toolInvocation.toolName === 'selectSeats' ? (
+                      <div>Selecting seats...</div>
+                    ) : toolInvocation.toolName === 'createReservation' ? (
+                      <div>Creating reservation...</div>
+                    ) : toolInvocation.toolName === 'verifyPayment' ? (
+                      <div>Verifying payment...</div>
+                    ) : toolInvocation.toolName === 'authorizePayment' ? (
+                      <div>Authorizing payment...</div>
+                    ) : toolInvocation.toolName === 'displayColorPalette' ? (
+                      <div>Loading color palette...</div>
+                    ) : toolInvocation.toolName === 'displayBoardingPass' ? (
+                      <div>Loading boarding pass...</div>
+                    ) : null}
+                  </div>
+                );
+              case 'result':
+                return (
+                  <div key={toolInvocation.toolCallId}>
+                    {toolInvocation.toolName === 'displayWeather' ? (
+                      <Weather weatherAtLocation={toolInvocation.result} />
+                    ) : toolInvocation.toolName === 'displayFlightStatus' ? (
+                      <div>displayFlightStatus</div>
+                    ) : toolInvocation.toolName === 'searchFlights' ? (
+                      <div>searchFlights</div>
+                    ) : toolInvocation.toolName === 'selectSeats' ? (
+                      <div>selectSeats</div>
+                    ) : toolInvocation.toolName === 'createReservation' ? (
+                      Object.keys(toolInvocation.result).includes(
+                        'error'
+                      ) ? null : (
+                        <div>createReservation</div>
+                      )
+                    ) : toolInvocation.toolName === 'authorizePayment' ? (
+                      <div>authorizePayment</div>
+                    ) : toolInvocation.toolName === 'displayBoardingPass' ? (
+                      <div>displayBoardingPass</div>
+                    ) : toolInvocation.toolName === 'verifyPayment' ? (
+                      <div>verifyPayment</div>
+                    ) : (
+                      <div>
+                        {JSON.stringify(toolInvocation.result, null, 2)}
+                      </div>
+                    )}
+                  </div>
+                );
+            }
+          }
+
+          return null;
+        })}
+
+        {/* {attachments && (
+          <div className="flex flex-row gap-2">
+            {attachments.map((attachment) => (
+              <PreviewAttachment key={attachment.url} attachment={attachment} />
+            ))}
+          </div>
+        )} */}
+      </div>
+    </div>
+  );
+}
