@@ -9,20 +9,20 @@ A demo project showcasing the use of the Vercel AI SDK chat component with custo
 - **Color Manipulation:** Utilizes [chroma.js](https://gka.github.io/chroma.js/) for advanced color processing.
 - **Markdown Parsing:** Renders OpenAI responses with [react-markdown](https://github.com/remarkjs/react-markdown).
 
-## Demo
+## Screenshots & Demo
 
-![Demo Screenshot](demo-placeholder.png)
+<img width="821" alt="default-screen" src="https://github.com/user-attachments/assets/cb23005c-a066-4db9-86a5-8c437e658b20" />
 
-<!-- Replace with actual screenshot or video -->
+<img width="821" alt="barcelona-palette" src="https://github.com/user-attachments/assets/c7a6c842-2f2e-4c21-a17e-d9a2f603792c" />
 
-[Demo Video](demo-placeholder.mp4)
+[demo.webm](https://github.com/user-attachments/assets/b2b78564-203e-4d08-a55d-1055447b629e)
 
 ## Getting Started
 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/generative-color-palette.git
+   git clone https://github.com/JuanjoFR/generative-color-palette.git
    cd generative-color-palette
    ```
 
