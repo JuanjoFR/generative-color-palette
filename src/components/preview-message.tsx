@@ -1,11 +1,8 @@
 import { UIMessage } from 'ai';
 import { BotIcon, UserIcon } from 'lucide-react';
 import { Markdown } from './markdown';
-import { Weather } from './weather';
 import { cx } from 'class-variance-authority';
 import { ColorPalette } from './color-palette';
-
-// iteration example: https://chat-sdk.dev/docs/migration-guides/message-parts
 
 export default function PreviewMessage({ id, role, parts }: UIMessage) {
   return (
@@ -44,9 +41,7 @@ export default function PreviewMessage({ id, role, parts }: UIMessage) {
                     skeleton: ['getWeather'].includes(toolName),
                   })}
                 >
-                  {toolName === 'getWeather' ? (
-                    <Weather />
-                  ) : toolName === 'getColorPalette' ? (
+                  {toolName === 'getColorPalette' ? (
                     <div>Loading color palette...</div>
                   ) : null}
                 </div>
@@ -58,9 +53,7 @@ export default function PreviewMessage({ id, role, parts }: UIMessage) {
 
               return (
                 <div key={toolCallId}>
-                  {toolName === 'getWeather' ? (
-                    <Weather weatherAtLocation={result} />
-                  ) : toolName === 'getColorPalette' ? (
+                  {toolName === 'getColorPalette' ? (
                     <ColorPalette {...result} />
                   ) : null}
                 </div>

@@ -9,14 +9,15 @@ import useWindowSize from './use-window-size';
 
 const suggestedActions = [
   {
-    title: 'Help me book a flight',
-    label: 'from San Francisco to London',
-    action: 'Help me book a flight from San Francisco to London',
+    title: 'Barcelona architecture palette',
+    label: 'inspired by Gaudí',
+    action:
+      'Help me create a color palette inspired by Barcelona architecture and Gaudí',
   },
   {
-    title: 'What is the status',
-    label: 'of flight BA142 flying tmrw?',
-    action: 'What is the status of flight BA142 flying tmrw?',
+    title: '8-bit game palette',
+    label: 'inspired by classic games',
+    action: 'Create an 8-bit game palette inspired by classic games',
   },
 ];
 

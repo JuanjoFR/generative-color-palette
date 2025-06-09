@@ -11,7 +11,7 @@ export function ColorPalette({ colors }: { colors: string[] }) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-4 p-6">
+    <div className="mx-auto w-full max-w-4xl">
       <Card className="overflow-hidden py-0">
         <CardContent className="flex h-32 px-0">
           {colors.map((color, index) => (
@@ -19,7 +19,6 @@ export function ColorPalette({ colors }: { colors: string[] }) {
               key={index}
               className="group relative flex-1 cursor-pointer transition-all duration-200 hover:flex-[2]"
               style={{ backgroundColor: color }}
-              // onClick={() => copyToClipboard(color)}
             >
               <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                 <div
@@ -29,7 +28,6 @@ export function ColorPalette({ colors }: { colors: string[] }) {
                     color: getTextColor(color),
                   }}
                 >
-                  {/* {copiedColor === color ? <CheckIcon className="w-4 h-4" /> : <CopyIcon className="w-4 h-4" />} */}
                   <span className="font-mono text-sm font-medium">
                     {color.toUpperCase()}
                   </span>

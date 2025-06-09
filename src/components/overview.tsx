@@ -14,16 +14,17 @@ export default function Overview() {
           <MessageCircle />
         </p>
         <p>
-          This is an open source Chatbot template powered by the Google Gemini
-          model built with Next.js and the AI SDK by Vercel. It uses the{' '}
+          This is an open source chatbot project powered by OpenAI GPT and a
+          custom tool for generating color palettes. It is built with Next.js
+          and the AI SDK by Vercel. The server uses the{' '}
           <code className="bg-muted-foreground/15 rounded-sm px-1.5 py-0.5">
             streamText
           </code>{' '}
-          function in the server and the{' '}
+          function, and the client uses the{' '}
           <code className="bg-muted-foreground/15 rounded-sm px-1.5 py-0.5">
             useChat
           </code>{' '}
-          hook on the client to create a seamless chat experience.
+          hook to create a seamless chat experience.
         </p>
         <p>
           {' '}
