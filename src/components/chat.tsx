@@ -25,14 +25,7 @@ export default function Chat() {
           {messages.length === 0 && <Overview />}
 
           {messages.map((message) => (
-            <PreviewMessage
-              key={message.id}
-              // role={message.role}
-              // content={message.content}
-              // attachments={message.experimental_attachments}
-              // parts={message.parts}
-              {...message}
-            />
+            <PreviewMessage key={message.id} {...message} />
           ))}
 
           <div
