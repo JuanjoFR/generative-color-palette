@@ -1,6 +1,19 @@
 {
   "name": "generative-color-palette",
   "version": "0.1.0",
+  "description": "AI-powered Next.js demo that generates and visualizes custom color palettes using Vercel AI SDK with generative UI.",
+  "keywords": [
+    "nextjs",
+    "ai",
+    "vercel",
+    "color-palette",
+    "generative-ui",
+    "chroma-js",
+    "react",
+    "openai",
+    "chat",
+    "tools"
+  ],
   "private": true,
   "scripts": {
     "dev": "next dev",
